@@ -62,18 +62,67 @@ function Sprite(spritesheet,width,height){
 			collide=false,
 			collisionX,
 			collisionY;
-		if(right1 < left2 ||
-			left1 > right2 ||
-			top1 > bottom2 ||
-			bottom1 < top2
+		if(right1 <= left2 ||
+			left1 >= right2 ||
+			top1 >= bottom2 ||
+			bottom1 <= top2
 		){
 			return false
 		}
-		
-		//console.log(rectangle);
-		//console.log(rectangle2);
-		console.log("x:"+collisionX+" y:"+collisionY+" left1-left2:"+(left1-left2)+" left2-left1:"+(left2-left1));
-		return true;
+		if(left1-left2>=0){
+			startX1=0;
+			startX2=left1-left2;
+			endX1=right2-left1;
+			endX2=startX2+this.width;
+		}else{
+			startX1=left2-left1;
+			startX2=0;
+			endX1=startX1+element.width;
+			endX2=right1-left2;
+		}
+		if(bottom1-bottom2>=0){
+			startY1=0;
+			startY2=top1-top2;
+			endY1=bottom2-top1;
+			endY2=startY2+this.height;
+		}else{
+			startY1=top2-top1;
+			startY2=0;
+			endY1=startY1+element.height;
+			endY2=bottom1-top2;
+		}
+		if(endX2>element.width){
+			endX2=element.width;
+		}else if(endX1>this.width){
+			endX1=this.width;
+		}
+		if(endY2>element.height){
+			endY2=element.height;
+		}else if(endY1>this.height){
+			endY1=this.height;
+		}
+		for(var i=0;i<endX1-startX1;i++){
+			for(var j=0;j<endY1-startY1;j++){
+				if(this.frames[this.frame].matrix[startX1+i][startY1+j]>0 && element.frames[element.frame].matrix[startX2+i][startY2+j]>0){
+					return true;
+				}
+			}
+		}
+		/*console.log(
+			"x:"+collisionX+
+			" y:"+collisionY+
+			" left1-left2:"+(left1-left2)+
+			" left2-left1:"+(left2-left1)+
+			" startX1: "+(startX1)+
+			" endX1:"+(endX1)+
+			" startX2: "+(startX2)+
+			" endX2:"+(endX2) +
+			" startY1: "+(startY1)+
+			" endY1:"+(endY1)+
+			" startY2: "+(startY2)+
+			" endY2:"+(endY2)
+		);*/
+		return false;
 	};
 	this.nextFrame=function(){
 		if(self.frame<self.frames.length-1){
