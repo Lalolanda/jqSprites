@@ -1,5 +1,6 @@
 var jSprites={
 	Spritesheet:Spritesheet,
+	SpriteType:SpriteType,
 	Sprite:Sprite,
 	Frame:Frame
 };
@@ -15,12 +16,12 @@ function Spritesheet(path){
 	});
 	this.path=path;
 }
-
-function Sprite(spritesheet,width,height){
+function Sprite(spriteType){
 	var self=this;
-	this.spritesheet=spritesheet;
-	this.width=width;
-	this.height=height;
+	this.spritesheet=spriteType.spritesheet;
+	this.width=spriteType.width;
+	this.height=spriteType.height;
+	this.frames=spriteType.frames;
 	this.fps=10;
 	this.frame=0;
 	this.step=function(){};
@@ -30,26 +31,9 @@ function Sprite(spritesheet,width,height){
 		css({
 			"background-image":"url("+this.spritesheet.path+")",
 			"background-position":"0px 0px",
-			"position":"relative"
+			"position":"absolute"
 		});
-	this.calculate=function(){
-		var framesLenght=parseInt(this.spritesheet.width/this.width)*parseInt(this.spritesheet.height/this.height);
-		this.frames=new Array();
-		var
-			y=0,
-			x=0;
-		for(var i=0;i<framesLenght;i++){
-			this.frames.push(new jSprites.Frame(this.spritesheet, x, y, this.width, this.height));
-			x+=this.width;
-			if(y>=this.width){
-				x=0;
-				y+=this.height;
-			}
-		}
-		this.frames.reverse();
-		return this;
-	}
-	this.checkCollisionWith=function(element){
+		this.checkCollisionWith=function(element){
 		var
 			right1=this.element.offset().left+this.width,
 			left1=this.element.offset().left,
@@ -108,23 +92,9 @@ function Sprite(spritesheet,width,height){
 				}
 			}
 		}
-		/*console.log(
-			"x:"+collisionX+
-			" y:"+collisionY+
-			" left1-left2:"+(left1-left2)+
-			" left2-left1:"+(left2-left1)+
-			" startX1: "+(startX1)+
-			" endX1:"+(endX1)+
-			" startX2: "+(startX2)+
-			" endX2:"+(endX2) +
-			" startY1: "+(startY1)+
-			" endY1:"+(endY1)+
-			" startY2: "+(startY2)+
-			" endY2:"+(endY2)
-		);*/
 		return false;
 	};
-	this.nextFrame=function(){
+		this.nextFrame=function(){
 		if(self.frame<self.frames.length-1){
 			self.frame++;
 		}else{
@@ -153,6 +123,31 @@ function Sprite(spritesheet,width,height){
 		window.clearInterval(this.timerFlag);
 	}
 }
+function SpriteType(spritesheet,width,height){
+	var self=this;
+	this.spritesheet=spritesheet;
+	this.width=width;
+	this.height=height;
+	this.fps=10;
+	this.frame=0;
+	this.calculate=function(){
+		var framesLenght=parseInt(this.spritesheet.width/this.width)*parseInt(this.spritesheet.height/this.height);
+		this.frames=new Array();
+		var
+			y=0,
+			x=0;
+		for(var i=0;i<framesLenght;i++){
+			this.frames.push(new jSprites.Frame(this.spritesheet, x, y, this.width, this.height));
+			x+=this.width;
+			if(x>=this.width){
+				x=0;
+				y+=this.height;
+			}
+		}
+		this.frames.reverse();
+		return this;
+	}
+}
 
 function Frame(spritesheet,x,y,width,height){
 	var self=this;
@@ -166,7 +161,11 @@ function Frame(spritesheet,x,y,width,height){
 	attr("width",this.width).
 	attr("height",this.height);
 	var ctx=canvas.get(0).getContext('2d');
-	ctx.drawImage(this.spritesheet.element.get(0),x,y,this.width,this.height,0,0,this.width,this.height);
+	try{
+		ctx.drawImage(this.spritesheet.element.get(0),x,y,this.width,this.height,0,0,this.width,this.height);
+	}catch(e){
+		var test=0;
+	}
 	var pixelMatrix = ctx.getImageData(0,0,this.width,this.height).data;
 	for(var i=0;i<this.width;i++){
 		var column=new Array();
