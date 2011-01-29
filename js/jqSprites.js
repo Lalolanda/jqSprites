@@ -1,21 +1,47 @@
+(function( $ ){
+	$.jSprites={
+		Spritesheet:Spritesheet,
+		SpriteType:SpriteType,
+		Sprite:Sprite,
+		Frame:Frame
+	};
+	$.widget("ui.mywidget", {
+	   // default options
+	   options: {
+		 option1: "defaultValue",
+		 hidden: true
+	   },
+	   _create: function() {
+		 
+		 if (this.options.hidden) {
+		   
+		   this.element.hide();
+		 }
+	   },
+	   _doSomething: function() {
+		  // internal functions should be named with a leading underscore
+		  // manipulate the widget
+	   },
+	   value: function() {
+		 // calculate some value and return it
+		 return this._calculate();
+	   },
+	   length: function() {
+		 return this._someOtherValue();
+	   },
+	   destroy: function() {
+		   $.Widget.prototype.destroy.apply(this, arguments); // default destroy
+			// now do other stuff particular to this widget
+	   }
+	 });
+})( jQuery );
+
 var jSprites={
 	Spritesheet:Spritesheet,
 	SpriteType:SpriteType,
 	Sprite:Sprite,
 	Frame:Frame
 };
-
-
-function Spritesheet(path){
-	var self=this;
-	this.element=$("<img />").
-	attr("src",path).
-	load(function(){
-		self.width=this.width;
-		self.height=this.height;
-	});
-	this.path=path;
-}
 function Sprite(spriteType){
 	var self=this;
 	this.spritesheet=spriteType.spritesheet;
@@ -26,31 +52,31 @@ function Sprite(spriteType){
 	this.frame=0;
 	this.step=function(){};
 	this.element=$("<div></div>").
-		width(this.width).
-		height(this.height).
-		css({
-			"background-image":"url("+this.spritesheet.path+")",
-			"background-position":"0px 0px",
-			"position":"absolute"
-		});
-		this.checkCollisionWith=function(element){
+	width(this.width).
+	height(this.height).
+	css({
+		"background-image":"url("+this.spritesheet.path+")",
+		"background-position":"0px 0px",
+		"position":"absolute"
+	});
+	this.checkCollisionWith=function(element){
 		var
-			right1=this.element.offset().left+this.width,
-			left1=this.element.offset().left,
-			top1=this.element.offset().top,
-			bottom1=this.element.offset().top+this.height,
-			right2=element.element.offset().left+element.width,
-			left2=element.element.offset().left,
-			top2=element.element.offset().top,
-			bottom2=element.element.offset().top+element.height,
-			collide=false,
-			collisionX,
-			collisionY;
+		right1=this.element.offset().left+this.width,
+		left1=this.element.offset().left,
+		top1=this.element.offset().top,
+		bottom1=this.element.offset().top+this.height,
+		right2=element.element.offset().left+element.width,
+		left2=element.element.offset().left,
+		top2=element.element.offset().top,
+		bottom2=element.element.offset().top+element.height,
+		collide=false,
+		collisionX,
+		collisionY;
 		if(right1 <= left2 ||
 			left1 >= right2 ||
 			top1 >= bottom2 ||
 			bottom1 <= top2
-		){
+			){
 			return false
 		}
 		if(left1-left2>=0){
@@ -94,7 +120,7 @@ function Sprite(spriteType){
 		}
 		return false;
 	};
-		this.nextFrame=function(){
+	this.nextFrame=function(){
 		if(self.frame<self.frames.length-1){
 			self.frame++;
 		}else{
@@ -113,9 +139,9 @@ function Sprite(spriteType){
 	this.play=function(){
 		this.timerFlag=window.setInterval(function(){
 			self.
-				nextFrame().
-				element.
-					css("background-position",self.frames[self.frame].x+"px "+self.frames[self.frame].y+"px");
+			nextFrame().
+			element.
+			css("background-position",self.frames[self.frame].x+"px "+self.frames[self.frame].y+"px");
 			self.step.apply(self,new Array());
 		},1000/this.fps);
 	}
@@ -134,8 +160,8 @@ function SpriteType(spritesheet,width,height){
 		var framesLenght=parseInt(this.spritesheet.width/this.width)*parseInt(this.spritesheet.height/this.height);
 		this.frames=new Array();
 		var
-			y=0,
-			x=0;
+		y=0,
+		x=0;
 		for(var i=0;i<framesLenght;i++){
 			this.frames.push(new jSprites.Frame(this.spritesheet, x, y, this.width, this.height));
 			x+=this.width;
