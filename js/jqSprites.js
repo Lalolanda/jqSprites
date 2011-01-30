@@ -1,11 +1,4 @@
 (function( $ ){
-	var originalCss = jQuery.fn.css;
-	jQuery.fn.css = function() {
-		if(arguments.length==2 && typeof arguments[1]=="String"){
-			
-		}
-		return originalCss.apply(this, arguments);
-	};
 	$.jSprites={
 		options:{
 			fps: 12
@@ -17,23 +10,34 @@
 			this.
 			$.extend(this.options,options);
 		},
+		init:function(){
+			this.sprites.sprite("init");
+		},
 		play:function(){
-			var self=this;
-			this.timer=window.setInterval(function(){
-				self.sprites.sprite("nextFrame");self.sprites.sprite("step");
-			},1000/self.options.fps);
+			this.sprites.sprite("play");
 		},
 		stop:function(){
 			window.clearInterval(this.timer);
+		},
+		getSpritesheet:function(path,spritesheetClass){
+			return $("<img/>",{
+				"src":path,
+				"class":spritesheetClass
+			});
 		}
 	};
 	var jSpriteInit=
 	$.widget("ui.sprite", {
 		options: {
 			option1: "defaultValue",
-			hidden: false
+			hidden: false,
+			fps:12,
+			totalFrames:0
 		},
-		_create: function() {
+		_create:function(){
+			$.jSprites.sprites=$.jSprites.sprites.add(this.element);
+		},
+		init: function() {
 			var self=this
 				options=this.options;
 			this.spritesheet=options.spriteClass.spritesheet;
@@ -42,9 +46,6 @@
 			this.frames=options.spriteClass.frames;
 			this.fps=10;
 			this.frame=0;
-			this.step2=function(){};
-			$.jSprites.sprites=$.jSprites.sprites.add(this.element);
-			this.step=function(){};
 			this.element.
 			width(this.width).
 			height(this.height).
@@ -138,13 +139,13 @@
 		},
 		play:function(){
 			var self=this;
-			
-			/*this.timerFlag=window.setInterval(function(){
+			this.timerFlag=window.setInterval(function(){
 				self.nextFrame();
 				self.element.
 					css("background-position",(-self.frames[self.frame].x)+"px "+(-self.frames[self.frame].y)+"px");
-				self.step.apply(self,new Array());
-			},1000/this.fps);*/
+				self.step.apply(self.element,new Array({frames:self.options.totalFrames}));
+				self.options.totalFrames++;
+			},1000/this.options.fps);
 		},
 		enterFrame:function(fn){
 			this.step=fn;
@@ -154,6 +155,10 @@
 		},
 		stop:function(){
 			window.clearInterval(this.timerFlag);
+		},
+		addFunction:function(fn,name){
+			this[name]=fn;
+			var self=this;
 		},
 		destroy: function() {
 			$.Widget.prototype.destroy.apply(this, arguments); // default destroy
@@ -196,11 +201,7 @@
 			attr("width",this.width).
 			attr("height",this.height);
 		var ctx=canvas.get(0).getContext('2d');
-		try{
-			ctx.drawImage(this.spritesheet[0],x,y,this.width,this.height,0,0,this.width,this.height);
-		}catch(e){
-			var test=0;
-		}
+		ctx.drawImage(this.spritesheet[0],x,y,this.width,this.height,0,0,this.width,this.height);
 		var pixelMatrix = ctx.getImageData(0,0,this.width,this.height).data;
 		for(var i=0;i<this.width;i++){
 			var column=new Array();
@@ -210,76 +211,5 @@
 			this.matrix.push(column);
 
 		}
-		var test=test;
 	}
 })( jQuery );
-
-
-
-
-/*
-
-function animation(spritesheet,x,y,width,height,n){
-	if(typeof spritesheet!="undefined"){
-		this.spritesheet=spritesheet;
-		this.x=x;
-		this.y=y;
-		this.width=width;
-		this.height=height;
-		this.start=0;
-		this.frame=0;
-		this.state="stopped";
-		this.direction="right";
-		this.setDirection=function(){
-
-		}
-		this.setStart=function(nStart){
-			this.start=nStart;
-		}
-		this.nextFrame=function(){
-
-		}
-		this.prevFrame=function(){
-
-		}
-		this.play=function(){
-			this.state="playing";
-		}
-		this.stop=function(){
-			this.state="stopped";
-		}
-		this.pause=function(){
-			this.state="paused";
-		}
-		this.show=function(){
-
-		}
-		this.hide=function(){
-
-		}
-		this.getObject=function(){
-
-		}
-	}else{
-		this.frames=new Array();
-
-	}
-}
-function action(frame){
-	this.frame=frame;
-}
-function animatedAction(){
-
-}
-function sprite(){
-
-}
-function sprite(){
-	this.setAnimation=function(){
-
-	}
-	this.setAnimationArray=function(){
-
-	}
-}
- */

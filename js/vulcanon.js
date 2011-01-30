@@ -1,0 +1,11 @@
+$(document).ready(function(){
+	$("#stage").draggable();
+	spritesheets.
+		arrayLoad(function(){
+			$.jSprites.init();
+			$.jSprites.play();
+			$("body").click(function(event){
+				console.log(event);
+			});
+		});		
+});
