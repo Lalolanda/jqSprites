@@ -19,28 +19,47 @@
 		</style>
 		<script>
 			var sd;
-			$("<img src=\"images/ballCOmplete.png\"");
 			$(document).ready(function(){
-				var ballSpritesheet= new jSprites.Spritesheet("images/ballComplete.png");
-				var ballSpriteType;
+				var ballSpritesheet=$("<img />",{
+					src:"images/ballComplete.png"
+				});
+				var ballSpriteClass;
 				var ballSprite;
 				var balls=new Array();
 				$("#stage").draggable();
-				ballSpritesheet.element.load(function(){
-					ballSpriteType=new jSprites.SpriteType(ballSpritesheet,32,32);
-					ballSpriteType.calculate();
-					for(var i=0;i<20;i++){
-						ballSprite=new jSprites.Sprite(ballSpriteType);
-						ballSprite.element.appendTo("#stage");
-						var top=Math.random()*568;
-						var left=Math.random()*568;
-						ballSprite.element.css("top",top+"px");
-						ballSprite.element.css("left",left+"px");
-						balls.push(ballSprite);
-					}
-					$.each(balls,function(i,val){
-						val.play();
-					});
+				ballSpritesheet.load(function(){
+					$.jSprites.play();
+					ballSpriteClass=new $.jSprites.SpriteClass(ballSpritesheet,32,32);
+					ballSpriteClass.calculate();
+					ballSprite=$("<div>").
+							sprite({spriteClass:ballSpriteClass}).
+							appendTo("#stage").
+							sprite("play").
+							css("position","absolute").
+							draggable();
+					ballSprite2=$("<div>").
+							sprite({spriteClass:ballSpriteClass}).
+							appendTo("#stage").
+							sprite("play").
+							css("position","absolute").
+							draggable().
+							sprite("enterFrame",function(){
+								if(this.checkCollisionWith(ballSprite))console.log(true);
+							});
+					/*for(var i=0;i<20;i++){
+						ballSprite=$("<div>").
+							sprite({spriteClass:ballSpriteClass}).
+							appendTo("#stage").
+							sprite("play").
+							css("position","absolute").
+							sprite("enterFrame",function(){
+								var top=Math.random()*568;
+								var left=Math.random()*568;
+								this.element.
+									css("top",top+"px").
+									css("left",left+"px");
+							});
+					}*/
 				});
 				var test=test;
 			});
