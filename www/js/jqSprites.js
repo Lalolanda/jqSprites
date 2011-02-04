@@ -172,7 +172,7 @@
 		this.fps=10;
 		this.frame=0;
 		this.calculate=function(){
-			var framesLenght=this.spritesheet[0].width/this.width*this.spritesheet[0].height/this.height;
+			var framesLenght=this.spritesheet.width()/this.width*this.spritesheet.height()/this.height;
 			this.frames=new Array();
 			var
 			y=0,
@@ -185,6 +185,7 @@
 					y+=this.height;
 				}
 			}
+      this.calculated=true;
 			return this;
 		}
 	}
