@@ -6,7 +6,7 @@ $(document).ready(function(){
       do{
         isLoaded=true;
         $.each(classes,function(i,val){
-          if(!val.completed){
+          if(!val.calculated){
             isLoaded=false;
           }
         });

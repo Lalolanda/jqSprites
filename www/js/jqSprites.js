@@ -171,6 +171,7 @@
 		this.height=height;
 		this.fps=10;
 		this.frame=0;
+    this.calculated=false;
 		this.calculate=function(){
 			var framesLenght=this.spritesheet.width()/this.width*this.spritesheet.height()/this.height;
 			this.frames=new Array();
