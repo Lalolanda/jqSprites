@@ -42,7 +42,30 @@
 			if(i==length){
 				fn.apply(this,arguments);
 			}
-		})
+		});
 		return this;
 	};
+	$.fn.arrayBind=function(){
+		var self=this;
+		var total=$(this).length;
+		var count=0;
+		var handler=arguments[1];
+		if(typeof arguments[1]=="function"){
+			$(this).bind(arguments[0],function(){
+				count++;
+				if(count==total){
+					handler.apply(self);
+				}
+			});
+		}else if(typeof arguments[1]=="object"){
+			handler=arguments[2];
+			$(this).bind(arguments[0],arguments[1],function(){
+				count++;
+				if(count==total){
+					handler.apply(self);
+				}
+			});
+		}
+		return this;
+	}
 })( jQuery );

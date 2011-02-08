@@ -4,10 +4,10 @@
 			fps: 12
 		},
 		sprites:$([]),
+		classes:[],
 		SpriteClass:SpriteClass,
 		Frame:Frame,
 		setOptions:function(options){
-			this.
 			$.extend(this.options,options);
 		},
 		init:function(){
@@ -26,11 +26,20 @@
 			});
 		}
 	};
-	var jSpriteInit=
-	$.widget("ui.sprite", {
+	$.widget("ui.spriteClass", {
 		options: {
 			option1: "defaultValue",
 			hidden: false,
+			fps:12,
+			totalFrames:0
+		},
+		_create:function(){
+			$.jSprites.sprites=$.jSprites.sprites.add(this.element);
+		}
+
+	});
+	$.widget("ui.sprite", {
+		options: {
 			fps:12,
 			totalFrames:0
 		},
@@ -165,30 +174,7 @@
 		}
 	});
 	function SpriteClass(spritesheet,width,height){
-		var self=this;
-		this.spritesheet=spritesheet;
-		this.width=width;
-		this.height=height;
-		this.fps=10;
-		this.frame=0;
-    this.calculated=false;
-		this.calculate=function(){
-			var framesLenght=this.spritesheet.width()/this.width*this.spritesheet.height()/this.height;
-			this.frames=new Array();
-			var
-			y=0,
-			x=0;
-			for(var i=0;i<framesLenght;i++){
-				this.frames.push(new $.jSprites.Frame(this.spritesheet, x, y, this.width, this.height));
-				x+=this.width;
-				if(x>=this.spritesheet[0].width){
-					x=0;
-					y+=this.height;
-				}
-			}
-      this.calculated=true;
-			return this;
-		}
+		
 	}
 
 	function Frame(spritesheet,x,y,width,height){

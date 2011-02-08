@@ -4,4 +4,5 @@ var
 	helicopterClass=new $.jSprites.SpriteClass(spritesheets.filter(".helicopter"),44,24).calculate(),
 	spaceshipClass=new $.jSprites.SpriteClass(spritesheets.filter(".spaceship"),31,20).calculate(),
 	spaceship2Class=new $.jSprites.SpriteClass(spritesheets.filter(".spaceship2"),30,6).calculate(),
-  classes=new Array(vulcanonClass,fireballClass,helicopterClass,spaceshipClass,spaceship2Class);
+	classes=new Array(vulcanonClass,fireballClass,helicopterClass,spaceshipClass,spaceship2Class);
+$.jSprites.classes=classes;
