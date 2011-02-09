@@ -28,15 +28,30 @@
 	};
 	$.widget("ui.spriteClass", {
 		options: {
-			option1: "defaultValue",
-			hidden: false,
 			fps:12,
 			totalFrames:0
 		},
 		_create:function(){
 			$.jSprites.sprites=$.jSprites.sprites.add(this.element);
+			this.options.calculated=false;
+		},
+		calculate:function(){
+			var framesLenght=this.options.spritesheet.width()/this.options.width*this.options.spritesheet.height()/this.options.height;
+			this.options.frames=new Array();
+			var
+			y=0,
+			x=0;
+			for(var i=0;i<framesLenght;i++){
+				this.options.frames.push(new $.jSprites.Frame(this.options.spritesheet, x, y, this.options.width, this.options.height));
+				x+=this.options.width;
+				if(x>=this.options.spritesheet[0].width){
+					x=0;
+					y+=this.options.height;
+				}
+			}
+			this.options.calculated=true;
+			return this;
 		}
-
 	});
 	$.widget("ui.sprite", {
 		options: {
@@ -49,10 +64,10 @@
 		init: function() {
 			var self=this
 				options=this.options;
-			this.spritesheet=options.spriteClass.spritesheet;
-			this.width=options.spriteClass.width;
-			this.height=options.spriteClass.height;
-			this.frames=options.spriteClass.frames;
+			this.spritesheet=options.spriteClass.spriteClass("option","spritesheet");
+			this.width=options.spriteClass.spriteClass("option","width");
+			this.height=options.spriteClass.spriteClass("option","height");
+			this.frames=options.spriteClass.spriteClass("option","frames");
 			this.fps=10;
 			this.frame=0;
 			this.element.
