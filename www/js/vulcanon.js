@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	$("#stage").draggable();
 	spritesheets.arrayLoad(function(){
+		$.jSprites.classes.each(function(){this.spriteClass("calculate");});
 		$.jSprites.init();
 		$.jSprites.play();
 		$("body").click(function(event){

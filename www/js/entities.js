@@ -2,6 +2,7 @@ $(document).ready(function(){
 	var
 		vulcanon=$("<div>").
 			sprite({spriteClass:vulcanonClass}).
+			addClass("vulcanon").
 			appendTo("#stage").
 			css("position","absolute").
 			css("bottom","-10px").
@@ -18,13 +19,23 @@ $(document).ready(function(){
 			},"shootFireball"),
 		fireball=$("<div>").
 			sprite({spriteClass:fireballClass}).
+			addClass("fireball").
 			appendTo("#stage").
 			css("position","absolute").
 			css("bottom","45px").
 			css("left","147px").
 			draggable(),
+		fireball2=$("<div>").
+			sprite({spriteClass:fireballClass}).
+			addClass("fireball fireball2").
+			appendTo("#stage").
+			css("position","absolute").
+			css("bottom","125px").
+			css("left","147px").
+			draggable(),
 		spaceship=$("<div>").
 			sprite({spriteClass:spaceshipClass}).
+			addClass("spaceship").
 			appendTo("#stage").
 			css("position","absolute").
 			css("bottom","85px").
@@ -32,6 +43,7 @@ $(document).ready(function(){
 			draggable(),
 		spaceship2=$("<div>").
 			sprite({spriteClass:spaceship2Class}).
+			addClass("spaceship2").
 			appendTo("#stage").
 			css("position","absolute").
 			css("top","140px").
@@ -39,9 +51,20 @@ $(document).ready(function(){
 			draggable(),
 		helicopter=$("<div>").
 			sprite({spriteClass:helicopterClass}).
+			addClass("helicopter").
 			appendTo("#stage").
 			css("position","absolute").
 			css("top","50px").
 			css("left","320px").
 			draggable();
+		for(var i=0;i<1500;i++){
+			helicopter=$("<div>").
+			sprite({spriteClass:helicopterClass}).
+			addClass("helicopter").
+			appendTo("#stage").
+			css("position","absolute").
+			css("top","50px").
+			css("left",(320-(i*5))+"px").
+			draggable();
+		}
 });
