@@ -10,10 +10,10 @@
 		<script type="text/javascript" src="js/jquery-ui-1.8.9.custom.js"></script>
 		<script type="text/javascript" src="js/jQueryAdds.js"></script>
 		<script type="text/javascript" src="js/jqSprites.js"></script>
-		<script type="text/javascript" src="js/spritesheets.js"></script>
-		<script type="text/javascript" src="js/classes.js"></script>
-		<script type="text/javascript" src="js/entities.js"></script>
-		<script type="text/javascript" src="js/vulcanon.js"></script>
+		<script type="text/javascript" src="js/vulcanon/spritesheets.js"></script>
+		<script type="text/javascript" src="js/vulcanon/classes.js"></script>
+		<script type="text/javascript" src="js/vulcanon/entities.js"></script>
+		<script type="text/javascript" src="js/vulcanon/vulcanon.js"></script>
 		<style>
 			#stage{
 				width:400px;

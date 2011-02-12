@@ -38,7 +38,7 @@
 			length=this.length,
 			i=0;
 		this.load(function(){
-			i++;console.log(i);
+			i++;
 			if(i==length){
 				fn.apply(this,arguments);
 			}

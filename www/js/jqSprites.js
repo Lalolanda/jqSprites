@@ -35,7 +35,7 @@
 			$.jSprites.sprites=$.jSprites.sprites.add(this.element);
 			this.options.calculated=false;
 		},
-		calculate:function(){console.log("calculate");
+		calculate:function(){
 			var framesLenght=this.options.spritesheet[0].width/this.options.width*this.options.spritesheet[0].height/this.options.height;
 			this.options.frames=new Array();
 			var

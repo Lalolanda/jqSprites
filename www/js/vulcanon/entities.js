@@ -57,7 +57,7 @@ $(document).ready(function(){
 			css("top","50px").
 			css("left","320px").
 			draggable();
-		for(var i=0;i<1500;i++){
+		for(var i=0;i<5;i++){
 			helicopter=$("<div>").
 			sprite({spriteClass:helicopterClass}).
 			addClass("helicopter").
