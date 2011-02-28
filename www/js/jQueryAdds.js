@@ -1,10 +1,15 @@
 (function( $ ){
+	$.log=function(info){
+		if(console && console.log){
+			console.log(info);
+		}
+	};
 	$.parseInt=function(string){
 		var patt=/[0-9]+/g;
 		patt.lastIndex=0;
 		var parsedString=parseInt(string),
-			execString=patt.exec(string),
-			parsedExecString=parseInt(execString);
+		execString=patt.exec(string),
+		parsedExecString=parseInt(execString);
 		if(isNaN(parseInt(string))){
 			return parsedExecString;
 		}else{
@@ -14,8 +19,8 @@
 	var originalCss = jQuery.fn.css;
 	jQuery.fn.css = function() {
 		var
-			attrSupported=["top","left","bottom","right"],
-			prefixSupported=["+=","-="];
+		attrSupported=["top","left","bottom","right"],
+		prefixSupported=["+=","-="];
 		if(arguments.length==2 && $.inArray(arguments[0],attrSupported)>-1 && $.inArray(arguments[1].slice(0,2),prefixSupported)>-1){
 			var newArgs=new Array();
 			newArgs.push(arguments[0]);
@@ -34,15 +39,15 @@
 	};
 	$.fn.arrayLoad=function(fn,arguments){
 		var
-			self=this,
-			length=this.length,
-			i=0;
+		self=this,
+		length=this.length,
+		i=0;
 		this.load(function(){
 			i++;
 			if(i==length){
 				fn.apply(this,arguments);
 			}
-		});
+		})
 		return this;
 	};
 	$.fn.arrayBind=function(){
@@ -50,20 +55,17 @@
 		var total=$(this).length;
 		var count=0;
 		var handler=arguments[1];
+		var event=arguments[0];
 		if(typeof arguments[1]=="function"){
-			$(this).bind(arguments[0],function(){
-				count++;
-				if(count==total){
-					handler.apply(self);
-				}
-			});
-		}else if(typeof arguments[1]=="object"){
-			handler=arguments[2];
-			$(this).bind(arguments[0],arguments[1],function(){
-				count++;
-				if(count==total){
-					handler.apply(self);
-				}
+			$(this).each(function(){
+				var self2=$(this);
+				self2.show();
+				self2.bind(event,function(){
+					count++;
+					if(count==total){
+						handler.apply(self);
+					}
+				});
 			});
 		}
 		return this;

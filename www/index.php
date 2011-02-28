@@ -6,7 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<title>jSprite test</title>
 		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
-		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="js/jquery-1.5.1.js"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.8.9.custom.js"></script>
 		<script type="text/javascript" src="js/jQueryAdds.js"></script>
 		<script type="text/javascript" src="js/jqSprites.js"></script>

@@ -4,11 +4,10 @@
 			fps: 12
 		},
 		sprites:$([]),
-		classes:[],
-		SpriteClass:SpriteClass,
 		Frame:Frame,
 		setOptions:function(options){
-			$.extend(this.options,options);
+			this.
+				$.extend(this.options,options);
 		},
 		init:function(){
 			this.sprites.sprite("init");
@@ -26,7 +25,8 @@
 			});
 		}
 	};
-	$.widget("ui.spriteClass", {
+
+	$.widget("ui.sprite", {
 		options: {
 			option1: "defaultValue",
 			hidden: false,
@@ -35,49 +35,39 @@
 		},
 		_create:function(){
 			$.jSprites.sprites=$.jSprites.sprites.add(this.element);
-		}
-
-	});
-	$.widget("ui.sprite", {
-		options: {
-			fps:12,
-			totalFrames:0
-		},
-		_create:function(){
-			$.jSprites.sprites=$.jSprites.sprites.add(this.element);
 		},
 		init: function() {
 			var self=this
-				options=this.options;
-			this.spritesheet=options.spriteClass.spritesheet;
-			this.width=options.spriteClass.width;
-			this.height=options.spriteClass.height;
-			this.frames=options.spriteClass.frames;
+			options=this.options;
+			this.spritesheet=options.spriteClass.spriteClass("option","spritesheet");
+			this.width=options.spriteClass.spriteClass("option","width");
+			this.height=options.spriteClass.spriteClass("option","height");
+			this.frames=options.spriteClass.spriteClass("option","frames");
 			this.fps=10;
 			this.frame=0;
 			this.element.
-			width(this.width).
-			height(this.height).
-			css({
+				width(this.width).
+				height(this.height).
+				css({
 				"background-image":"url("+this.spritesheet.attr("src")+")",
 				"background-position":(-self.frames[self.frame].x)+"px "+(-self.frames[self.frame].y)+"px"
 			});
 		},
 		checkCollisionWith:function(element2){
 			var
-				right1=Math.floor(this.element.offset().left+this.width),
-				left1=Math.floor(this.element.offset().left),
-				top1=Math.floor(this.element.offset().top),
-				bottom1=Math.floor(this.element.offset().top+this.height),
-				right2=Math.floor(element2.offset().left+element2.width()),
-				left2=Math.floor(element2.offset().left),
-				top2=Math.floor(element2.offset().top),
-				bottom2=Math.floor(element2.offset().top+element2.height());
+			right1=Math.floor(this.element.offset().left+this.width),
+			left1=Math.floor(this.element.offset().left),
+			top1=Math.floor(this.element.offset().top),
+			bottom1=Math.floor(this.element.offset().top+this.height),
+			right2=Math.floor(element2.offset().left+element2.width()),
+			left2=Math.floor(element2.offset().left),
+			top2=Math.floor(element2.offset().top),
+			bottom2=Math.floor(element2.offset().top+element2.height());
 			if(right1 <= left2 ||
 				left1 >= right2 ||
 				top1 >= bottom2 ||
 				bottom1 <= top2
-				){
+		){
 				return false
 			}
 			if(left1-left2>=0){
@@ -132,7 +122,7 @@
 				this.frame=0;
 			}
 			self.element.
-					css("background-position",(-self.frames[self.frame].x)+"px "+(-self.frames[self.frame].y)+"px");
+				css("background-position",(-self.frames[self.frame].x)+"px "+(-self.frames[self.frame].y)+"px");
 			return this;
 		},
 		prevFrame:function(){
@@ -143,7 +133,7 @@
 				this.frame=this.frames.length-1;
 			}
 			self.element.
-					css("background-position",(-self.frames[self.frame].x)+"px "+(-self.frames[self.frame].y)+"px");
+				css("background-position",(-self.frames[self.frame].x)+"px "+(-self.frames[self.frame].y)+"px");
 			return this;
 		},
 		play:function(){
@@ -173,10 +163,33 @@
 			$.Widget.prototype.destroy.apply(this, arguments); // default destroy
 		}
 	});
-	function SpriteClass(spritesheet,width,height){
-		
-	}
-
+	$.widget("ui.spriteClass", {
+		options:{
+			fps:10,
+			frame:0,
+			calculated:false
+		},
+		_create:function(){
+			return $(this.element);
+		},
+		calculate:function(){
+			var framesLenght=this.options.spritesheet[0].width/this.options.width*this.options.spritesheet[0].height/this.options.height;
+			this.options.frames=new Array();
+			var
+				y=0,
+				x=0;
+			for(var i=0;i<framesLenght;i++){
+				this.options.frames.push(new $.jSprites.Frame(this.options.spritesheet, x, y, this.options.width, this.options.height));
+				x+=this.options.width;
+				if(x>=this.options.spritesheet[0].width){
+					x=0;
+					y+=this.options.height;
+				}
+			}
+			this.options.calculated=true;
+			this.element.trigger("calculateComplete");
+		}
+	});
 	function Frame(spritesheet,x,y,width,height){
 		var self=this;
 		this.spritesheet=spritesheet;
@@ -197,7 +210,6 @@
 				column.push(pixelMatrix[(j*this.width*4)+(i*4)+3]);
 			}
 			this.matrix.push(column);
-
 		}
 	}
 })( jQuery );
